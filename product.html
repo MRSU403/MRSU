@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SW11 Smart Watch</title>
+    <script src="./lib/vue.global.js"></script>
+    <script src="./lib/gsap.min.js"></script>
+    <script src="./lib/ScrollTrigger.min.js"></script>
+    <style>
+:root {
+    --primary-text-color: #ffffff;
+    --secondary-text-color: rgba(255, 255, 255, 0.7);
+    --accent-color: #00d9ff;
+    --bg-color: #040713;
+    --header-bg-color: rgba(4, 7, 19, 0.8);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* 导航栏样式 */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    z-index: 100;
+    background: var(--header-bg-color);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-text-color);
+    text-shadow: 0 0 8px rgba(0, 217, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo-icon {
+    height: 2.0rem;
+    width: auto;
+}
+
+.main-nav a {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--primary-text-color);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.cta-button-header {
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+}
+
+.cta-button-header:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
+}
+
+/* 主内容样式 */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 5% 40px;
+    box-sizing: border-box;
+}
+
+.hero-content { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+}
+
+.hero-text { 
+    max-width: 500px; 
+    text-align: left; 
+}
+
+.hero-text h1 { 
+    font-size: 4rem; 
+    font-weight: 700; 
+    line-height: 1.1; 
+    margin-bottom: 20px; 
+    text-shadow: 0 0 15px rgba(0, 217, 255, 0.4); 
+}
+
+.hero-text p { 
+    font-size: 1.2rem; 
+    font-weight: 300; 
+    color: var(--secondary-text-color); 
+    margin-bottom: 40px; 
+}
+
+.cta-button-main { 
+    display: inline-block; 
+    background-color: var(--accent-color); 
+    color: #040713; 
+    padding: 15px 35px; 
+    border-radius: 50px; 
+    text-decoration: none; 
+    font-weight: 500; 
+    font-size: 1.1rem; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    box-shadow: 0 5px 25px rgba(0, 217, 255, 0.4); 
+}
+
+.cta-button-main:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 35px rgba(0, 217, 255, 0.6); 
+}
+
+.hero-image { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.hero-image img { 
+    max-width: 100%; 
+    max-height: 80vh; 
+    object-fit: contain; 
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5)); 
+}
+/* --- 技术规格区域样式 --- */
+.specs-page {
+    padding: 120px 5%;
+    background-color: rgba(0, 0, 0, 0.2); /* 给一个深色背景以区分 */
+}
+
+.specs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.specs-title {
+    font-size: 2.8rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+    /* [改动] 调整标题下方的间距 */
+    margin-bottom: 25px; 
+    text-align: center;
+}
+
+/* [新增] 概述文本的样式 */
+.specs-summary {
+    max-width: 700px; /* 限制最大宽度以提高可读性 */
+    margin: 0 auto 60px; /* 顶部0, 左右自动居中, 底部60px */
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--secondary-text-color);
+    font-weight: 300;
+}
+/* 注意：在纯 HTML/CSS 中，:deep() 或 /deep/ 是 Vue SFC 的特殊语法。
+   在纯 HTML 中，如果 .highlight 位于 .specs-summary 内部的直接子元素，可以直接写。
+   如果 .highlight 是由 v-html 渲染的深层内容，并且你需要影响它，
+   你可以直接定义 .highlight 样式，只要它的特异性足够高或者不被其他样式覆盖。
+   这里我直接使用 .specs-summary .highlight */
+.specs-summary .highlight {
+    color: var(--accent-color); /* 使用你的主题强调色 */
+    font-weight: 600; /* 让字体更粗，更醒目 */
+}
+
+.table-wrapper {
+    overflow-x: auto; /* 在小屏幕上启用水平滚动 */
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--primary-text-color);
+    font-size: 0.95rem;
+    min-width: 800px; /* 保证表格在小屏幕滚动前有最小宽度 */
+}
+
+.specs-table th, .specs-table td {
+    padding: 18px 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    vertical-align: middle;
+}
+
+/* 表头样式 */
+.specs-table thead th {
+    background-color: rgba(0, 217, 255, 0.1);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    position: sticky;
+    top: 0; /* 如果页面可滚动，使表头置顶 */
+    z-index: 10;
+}
+.specs-table thead th:first-child {
+    text-align: left;
+    background-color: transparent;
+    color: var(--secondary-text-color);
+}
+
+/* 分类标题行样式 */
+.category-header td {
+    background-color: rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: left;
+    padding-left: 20px;
+    color: var(--primary-text-color);
+}
+
+/* 表格主体行样式 */
+.specs-table tbody tr:not(.category-header):hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 特征列（第一列）样式 */
+.specs-table tbody th {
+    text-align: left;
+    font-weight: 400;
+    color: var(--secondary-text-color);
+    width: 25%; /* 固定第一列宽度 */
+}
+
+/* 数据列样式 */
+.specs-table tbody td {
+    color: var(--primary-text-color);
+    line-height: 1.6;
+}
+
+/* 突出显示ECG功能 */
+/* 在纯 HTML 中，如果<td>内部直接包含<b>标签，可以直接这样写 */
+.specs-table td b {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .specs-title {
+        font-size: 2.2rem;
+    }
+    .specs-table th, .specs-table td {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+}
+    </style>
+<body>
+    <header class="main-header">
+        <a href="index.html" class="logo">
+            <img src="./lib/start-icon.png" alt="SW11 Logo" class="logo-icon" />
+            <span>SW11</span>
+        </a>
+        
+        <nav class="main-nav">
+            <a href="index.html">Main View</a>
+            <a href="about.html">About Us</a>
+            <a href="product.html" class="active">Product Page</a> <a href="support.html">Support</a>
+        </nav>
+
+        <a href="#order" class="cta-button-header">Order Now</a>
+    </header>
+
+    <div class="specs-page" id="specs">
+        <div class="specs-container">
+            <h2 class="specs-title">Technical Specifications</h2>
+
+            <p class="specs-summary"></p> 
+            
+            <div class="table-wrapper">
+                <table class="specs-table">
+                    <thead>
+                        <tr id="specs-table-header-row">
+                            <th>Feature</th>
+                            </tr>
+                    </thead>
+                    <tbody id="specs-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 不再需要 Vue 的 createApp，直接在全局作用域定义数据和逻辑
+        // 因为 Vue.global.js 只是引入 Vue 库，但我们不再使用 Vue 的组件化生命周期
+
+        // 注册GSAP插件
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- [数据] 模型名称 ---
+        const models = [
+            { name: 'ECG Edition' },
+            { name: 'Stainless Steel' },
+            { name: '46mm Aluminum' },
+            { name: '41mm Aluminum' },
+        ];
+
+        // --- [数据] 规格参数 ---
+        const specCategories = [
+            // --- Appearance ---
+            { category: 'Appearance', feature: 'Colors', values: ['Silver', 'Silver', 'Black, Gold', 'Black, Pink Gold, <br>Mist Silver, Aqua Green'] },
+            { category: 'Appearance', feature: 'Case Material', values: ['316L Stainless Steel', '316L Stainless Steel', 'Aluminum Alloy', 'Aluminum Alloy'] },
+            { category: 'Appearance', feature: 'Default Strap', values: ['Fluororubber', 'Italian Calfskin', 'Fluororubber', 'Fluororubber'] },
+            { category: 'Appearance', feature: 'Back Cover', values: ['Ceramic + Sapphire', 'Ceramic + Sapphire', 'Ceramic + PC', 'Ceramic + PC'] },
+            { category: 'Appearance', feature: 'Weight (w/o strap)', values: ['≈ 45.5g', '≈ 45.5g', '≈ 40g', '≈ 29.7g'] },
+            
+            // --- Display ---
+            { category: 'Display', feature: 'Screen Type', values: ['AMOLED Flexible Screen', 'AMOLED Flexible Screen', 'AMOLED Flexible Screen', 'AMOLED Screen'] },
+            { category: 'Display', feature: 'Screen Size', values: ['1.91 inch', '1.91 inch', '1.91 inch', '1.6 inch'] },
+            
+            // --- Performance & Core ---
+            { category: 'Performance', feature: 'Processor', values: ['Snapdragon 2500 &<br>Apollo 3', 'Snapdragon 2500 &<br>Apollo 3', 'Snapdragon 2500 &<br>Apollo 3', 'Snapdragon 2500 &<br>Apollo 3'] },
+            { category: 'Performance', feature: 'Operating System', values: ['ColorOS Watch', 'ColorOS Watch', 'ColorOS Watch', 'ColorOS Watch'] },
+            { category: 'Performance', feature: 'Memory', values: ['1GB RAM + 8GB ROM', '1GB RAM + 8GB ROM', '1GB RAM + 8GB ROM', '1GB RAM + 8GB ROM'] },
+            { category: 'Performance', feature: 'Battery Capacity', values: ['430mAh', '430mAh', '430mAh', '300mAh'] },
+            { category: 'Performance', feature: 'Typical Usage', values: ['40 hours', '40 hours', '40 hours', '24 hours'] },
+            { category: 'Performance', feature: 'Power Saver Mode', values: ['21 days', '21 days', '21 days', '14 days'] },
+            { category: 'Performance', feature: 'Charging', values: ['Watch VOOC Flash Charge', 'Watch VOOC Flash Charge', 'Watch VOOC Flash Charge', 'Watch VOOC Flash Charge'] },
+
+            // --- Health & Fitness ---
+            { category: 'Health & Fitness', feature: 'Key Health Functions', values: ['<b>ECG Detection</b>,<br>Heart Rate Monitor,<br>Sleep Tracking', 'Heart Rate Monitor,<br>Sleep Tracking,<br>Menstrual Cycle', 'Heart Rate Monitor,<br>Sleep Tracking,<br>Menstrual Cycle', 'Heart Rate Monitor,<br>Sleep Tracking,<br>Menstrual Cycle'] },
+            { category: 'Health & Fitness', feature: 'Water Resistance', values: ['5 ATM / IPX8', '5 ATM / IPX8', '5 ATM', '3 ATM'] },
+            
+            // --- Connectivity ---
+            { category: 'Connectivity', feature: 'eSIM Support', values: ['Supported', 'Supported', 'Supported', 'Supported'] },
+            { category: 'Connectivity', feature: 'GPS', values: ['Built-in GPS, A-GPS, BeiDou', 'Built-in GPS, A-GPS, BeiDou', 'Built-in GPS, A-GPS, BeiDou', 'Built-in GPS, A-GPS, BeiDou'] },
+            { category: 'Connectivity', feature: 'NFC', values: ['Supported', 'Supported', 'Supported', 'Supported'] },
+        ];
+
+        // --- [新增] 技术规格概述文本处理 ---
+        const summaryText = "Fusing premium craftsmanship with potent technology, the SW11 is engineered for excellence. The robust stainless steel case frames a stunning 1.91-inch flexible AMOLED display, bringing every detail to life. At its heart, a powerful dual-engine platform featuring Qualcomm Snapdragon & Apollo processors orchestrates a seamless experience, ensuring fluid performance and remarkable battery life. With advanced features like ECG monitoring and independent eSIM connectivity, the SW11 is a truly comprehensive and powerful smart device.";
+
+        const keywordsToHighlight = [
+            'stainless steel',
+            '1.91-inch flexible AMOLED display',
+            'dual-engine platform',
+            'Qualcomm Snapdragon & Apollo processors',
+            'ECG monitoring',
+            'eSIM connectivity'
+        ];
+
+        function getHighlightedSummary() {
+            let text = summaryText;
+            keywordsToHighlight.forEach(keyword => {
+                const regex = new RegExp(`(${keyword})`, 'gi');
+                text = text.replace(regex, `<span class="highlight">$1</span>`);
+            });
+            return text;
+        }
+
+        // --- DOMContentLoaded 事件监听，确保在 DOM 完全加载后执行脚本 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 动态生成技术规格表 ---
+            const tableHeaderRow = document.getElementById('specs-table-header-row');
+            const tableBody = document.getElementById('specs-table-body');
+            const specsSummaryElement = document.querySelector('.specs-summary');
+
+            // 填充概述文本
+            if (specsSummaryElement) {
+                specsSummaryElement.innerHTML = getHighlightedSummary();
+            }
+
+            // 填充表头模型名称
+            models.forEach(model => {
+                const th = document.createElement('th');
+                th.textContent = model.name;
+                tableHeaderRow.appendChild(th);
+            });
+
+            // 填充表格体
+            let currentCategory = '';
+            specCategories.forEach((spec, index) => {
+                // 如果类别发生变化，添加类别标题行
+                if (index === 0 || spec.category !== specCategories[index - 1].category) {
+                    const categoryHeaderRow = document.createElement('tr');
+                    categoryHeaderRow.classList.add('category-header');
+                    const td = document.createElement('td');
+                    td.colSpan = models.length + 1;
+                    td.textContent = spec.category;
+                    categoryHeaderRow.appendChild(td);
+                    tableBody.appendChild(categoryHeaderRow);
+                }
+
+                // 添加常规规格行
+                const tr = document.createElement('tr');
+                const featureTh = document.createElement('th');
+                featureTh.textContent = spec.feature;
+                tr.appendChild(featureTh);
+
+                spec.values.forEach(value => {
+                    const td = document.createElement('td');
+                    td.innerHTML = value; // 使用 innerHTML 支持 <br> 和 <b> 标签
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+
+
+            // --- Hero Section 动画 ---
+            const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+            tl.from('.hero-text h1', { y: 50, opacity: 0, duration: 0.8 })
+                .from('.hero-text p', { y: 50, opacity: 0, duration: 0.8 }, '-=0.6')
+                .from('.hero-text .cta-button-main', { y: 50, opacity: 0, duration: 0.8 }, '-=0.6')
+                .from('.hero-image', { opacity: 0, scale: 0.95, duration: 1.5 }, '-=0.8');
+
+            // --- 功能区滚动触发动画 ---
+
+            // 动画 1: AR 互动区
+            const arSection = document.querySelector('.ar-section');
+            gsap.from(arSection.querySelector('.feature-text'), {
+                scrollTrigger: {
+                    trigger: arSection,
+                    start: 'top 80%',
+                    end: 'bottom top',
+                    scrub: 1,
+                },
+                x: -100,
+                opacity: 0,
+                ease: 'power2.out',
+            });
+            
+            gsap.from(arSection.querySelector('.feature-image'), {
+                scrollTrigger: {
+                    trigger: arSection,
+                    start: 'top 80%',
+                    end: 'bottom top',
+                    scrub: 1,
+                },
+                x: 100,
+                opacity: 0,
+                ease: 'power2.out',
+            });
+
+            // 动画 2: AI 翻译区
+            const translationSection = document.querySelector('.translation-section');
+            gsap.from(translationSection.querySelector('.feature-image img'), {
+                scrollTrigger: {
+                    trigger: translationSection,
+                    start: 'top 75%',
+                    toggleActions: 'play none none reverse',
+                },
+                clipPath: 'inset(100% 0% 0% 0%)',
+                scale: 1.2,
+                duration: 1.2,
+                ease: 'expo.out',
+            });
+            
+            gsap.from(translationSection.querySelectorAll('.feature-text > *'), {
+                scrollTrigger: {
+                    trigger: translationSection,
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse',
+                },
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out',
+            });
+            
+            // 动画 3: 健康预警区
+            const healthSection = document.querySelector('.health-section');
+            gsap.fromTo(healthSection, 
+                { '--glow-opacity': 0, '--glow-scale': 0.5 },
+                {
+                    scrollTrigger: {
+                        trigger: healthSection,
+                        start: 'top 80%',
+                        end: 'center 60%',
+                        scrub: 1.5,
+                    },
+                    '--glow-opacity': 0.3,
+                    '--glow-scale': 1,
+                    ease: 'sine.inOut'
+                }
+            );
+            
+            gsap.from(healthSection.querySelector('.feature-image'), {
+                scrollTrigger: {
+                    trigger: healthSection,
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse',
+                },
+                scale: 0.8,
+                opacity: 0,
+                rotationZ: -10,
+                duration: 1,
+                ease: 'back.out(1.2)',
+            });
+            
+            gsap.from(healthSection.querySelectorAll('.feature-text > *'), {
+                scrollTrigger: {
+                    trigger: healthSection,
+                    start: 'top 65%',
+                    toggleActions: 'play none none reverse',
+                },
+                x: -50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out',
+            });
+
+            // --- [新增] 技术规格区域动画 ---
+            const specsTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.specs-page',
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            specsTl.from('.specs-title', {
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            });
+
+            specsTl.from('.specs-summary', {
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            }, '-=0.6');
+
+            specsTl.from('.table-wrapper', {
+                opacity: 0,
+                duration: 0.5
+            }, '-=0.5');
+
+            specsTl.from('.specs-table tr', {
+                y: 20,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power2.out',
+                stagger: 0.05
+            }, '-=0.3');
+
+            // 初始化悬停效果
+            initImageHoverEffects();
+        });
+
+        function initImageHoverEffects() {
+            // 效果 1: AR 互动区 - 3D 倾斜效果
+            const arImageContainer = document.querySelector('.ar-section .feature-image');
+            const arImage = arImageContainer.querySelector('img');
+
+            arImageContainer.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = arImageContainer.getBoundingClientRect();
+                const x = e.clientX - left;
+                const y = e.clientY - top;
+                const mouseX = (x / width) * 2 - 1;
+                const mouseY = (y / height) * 2 - 1;
+                const maxTilt = 8;
+                const maxMove = 10;
+
+                gsap.to(arImage, {
+                    duration: 0.5,
+                    rotationY: maxTilt * mouseX,
+                    rotationX: -maxTilt * mouseY,
+                    x: -maxMove * mouseX,
+                    y: -maxMove * mouseY,
+                    ease: 'power1.out',
+                });
+            });
+
+            arImageContainer.addEventListener('mouseleave', () => {
+                gsap.to(arImage, {
+                    duration: 0.8,
+                    rotationY: 0,
+                    rotationX: 0,
+                    x: 0,
+                    y: 0,
+                    ease: 'elastic.out(1, 0.5)',
+                });
+            });
+
+            // 效果 2: AI 翻译区 - 光泽扫过效果
+            const translationImageContainer = document.querySelector('.translation-section .feature-image');
+            const shineEffect = translationImageContainer.querySelector('.shine-effect');
+            
+            const shineTl = gsap.timeline({ paused: true });
+            shineTl.fromTo(shineEffect, 
+                { left: '-120%' },
+                { left: '120%', duration: 0.8, ease: 'power1.inOut' }
+            );
+
+            translationImageContainer.addEventListener('mouseenter', () => {
+                shineTl.restart();
+            });
+            
+            // 效果 3: 健康预警区 - 心跳脉冲效果
+            const healthImage = document.querySelector('.health-section .feature-image img');
+            const healthContainer = document.querySelector('.health-section .feature-image');
+            
+            const pulseTl = gsap.timeline({ paused: true, repeat: -1, yoyo: true });
+            pulseTl.to(healthImage, {
+                scale: 1.03,
+                duration: 1.2,
+                ease: 'sine.inOut',
+            }).to(healthImage, {
+                boxShadow: '0 25px 60px rgba(0, 217, 255, 0.4)',
+                duration: 1.2,
+                ease: 'sine.inOut',
+            }, '<');
+
+            healthContainer.addEventListener('mouseenter', () => {
+                pulseTl.play();
+            });
+
+            healthContainer.addEventListener('mouseleave', () => {
+                gsap.to(healthImage, {
+                    scale: 1,
+                    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
+                    duration: 0.5,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                        pulseTl.pause(0);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

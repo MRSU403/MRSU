@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - 666 Company</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style >
+        :root {
+    --primary-text-color: #ffffff;
+    --secondary-text-color: rgba(255, 255, 255, 0.7);
+    --accent-color: #00d9ff;
+    --bg-color: #040713;
+    --header-bg-color: rgba(4, 7, 19, 0.8);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* 导航栏样式 */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    z-index: 100;
+    background: var(--header-bg-color);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-text-color);
+    text-shadow: 0 0 8px rgba(0, 217, 255, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo-icon {
+    height: 2.0rem;
+    width: auto;
+}
+
+.main-nav a {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--primary-text-color);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.cta-button-header {
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+}
+
+.cta-button-header:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.6);
+}
+
+/* 主内容样式 */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 5% 40px;
+    box-sizing: border-box;
+}
+
+.hero-content { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+}
+
+.hero-text { 
+    max-width: 500px; 
+    text-align: left; 
+}
+
+.hero-text h1 { 
+    font-size: 4rem; 
+    font-weight: 700; 
+    line-height: 1.1; 
+    margin-bottom: 20px; 
+    text-shadow: 0 0 15px rgba(0, 217, 255, 0.4); 
+}
+
+.hero-text p { 
+    font-size: 1.2rem; 
+    font-weight: 300; 
+    color: var(--secondary-text-color); 
+    margin-bottom: 40px; 
+}
+
+.cta-button-main { 
+    display: inline-block; 
+    background-color: var(--accent-color); 
+    color: #040713; 
+    padding: 15px 35px; 
+    border-radius: 50px; 
+    text-decoration: none; 
+    font-weight: 500; 
+    font-size: 1.1rem; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    box-shadow: 0 5px 25px rgba(0, 217, 255, 0.4); 
+}
+
+.cta-button-main:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 35px rgba(0, 217, 255, 0.6); 
+}
+
+.hero-image { 
+    flex: 1; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.hero-image img { 
+    max-width: 100%; 
+    max-height: 80vh; 
+    object-fit: contain; 
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5)); 
+}
+
+/* 功能区样式 */
+.feature-sections-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 0;
+}
+
+.feature-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 5%;
+    padding: 100px 5%;
+    margin-bottom: 80px;
+    min-height: 70vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-text {
+    flex: 1;
+}
+
+.feature-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.ar-section .feature-image img {
+    transform-style: preserve-3d;
+    transition: box-shadow 0.3s ease;
+}
+
+.ar-section .feature-image:hover img {
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+
+.ar-section .feature-image {
+    perspective: 1000px;
+}
+
+.feature-image img {
+    max-width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.feature-text h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--primary-text-color);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.feature-text h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    margin-bottom: 25px;
+    text-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+}
+
+.feature-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--secondary-text-color);
+}
+
+/* 布局反转 */
+.layout-reverse {
+    flex-direction: row-reverse;
+}
+
+/* AI 翻译区图片容器 */
+.translation-section .feature-image {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* 健康预警区背景辉光 */
+.health-section {
+    --glow-opacity: 0;
+    --glow-scale: 0.5;
+}
+
+.health-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(0, 217, 255, 0.8) 0%, rgba(0, 217, 255, 0) 70%);
+    transform: translate(-50%, -50%) scale(var(--glow-scale));
+    opacity: var(--glow-opacity);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 光泽扫过效果 */
+.shine-effect {
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+}
+
+/* 健康区图片容器 */
+.health-section .feature-image {
+    cursor: pointer;
+}
+
+/* 响应式布局 */
+@media (max-width: 900px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        margin-top: 80px;
+        min-height: auto;
+    }
+    
+    .hero-text {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .hero-text h1 { 
+        font-size: 3rem; 
+    }
+    
+    .feature-section, .layout-reverse {
+        flex-direction: column;
+        gap: 40px;
+        padding: 60px 5%;
+        text-align: center;
+    }
+    
+    .feature-text {
+        order: 2;
+    }
+    
+    .feature-image {
+        order: 1;
+    }
+}
+.about-page {
+  padding: 120px 5% 60px; /* 顶部120px是为了给固定的导航栏留出空间 */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--secondary-text-color);
+  max-width: 900px;
+  margin-bottom: 60px;
+}
+
+.personnel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.personnel-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 25px;
+  /* [改动] 移除 transition，因为 GSAP 会处理 */
+  /* transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; */
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  /* [新增] 关键！为内部绝对定位的 SVG 提供定位上下文 */
+  position: relative;
+  /* [新增] 防止内部元素在放大时溢出卡片圆角 */
+  overflow: hidden;
+}
+
+/* [新增] 动态边框 SVG 的样式 */
+.card-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* 确保 SVG 不会捕获鼠标事件 */
+}
+
+.card-border rect {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-width: 2px; /* 边框宽度 */
+  /* 让边框看起来更亮眼 */
+  filter: drop-shadow(0 0 5px var(--accent-color));
+}
+
+
+.icon-container {
+  flex-shrink: 0;
+  background-color: rgba(0, 217, 255, 0.1);
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* [新增] 将 z-index 提高，确保它在 SVG 边框之上 */
+  z-index: 1;
+}
+
+.personnel-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--accent-color);
+}
+
+.text-content {
+  display: flex;
+  flex-direction: column;
+  /* [新增] 同样提高 z-index */
+  z-index: 1;
+}
+
+
+.personnel-card h3 {
+  font-size: 1.5rem;
+  color: var(--primary-text-color);
+  margin-bottom: 5px;
+}
+
+.personnel-card .role {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent-color);
+  margin-bottom: 15px;
+}
+
+.personnel-card .description {
+  font-size: 0.95rem;
+  color: var(--secondary-text-color);
+  line-height: 1.6;
+}
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <a href="index.html" class="logo">
+            <img src="./lib/start-icon.png" alt="SW11 Logo" class="logo-icon" />
+            <span>SW11</span>
+        </a>
+        
+        <nav class="main-nav">
+            <a href="index.html">Main View</a>
+            <a href="about.html" class="active">About Us</a> <a href="product.html">Product Page</a>
+            <a href="support.html">Support</a>
+        </nav>
+
+        <a href="#order" class="cta-button-header">Order Now</a>
+    </header>
+    <div class="about-page">
+
+        <div class="content-wrapper">
+            <!-- Company Profile Section -->
+            <section class="profile-section">
+                <h2>Company Profile</h2>
+                <p>
+                    666 Company is a high-tech enterprise specializing in the R & D and production of smart wearable devices. It is committed to providing users with innovative and convenient smart life solutions. Since its establishment, with the mission of "Technology Changing Life", we have successfully launched a number of popular smart watch products, covering core functions such as health monitoring, sports tracking, and smart notifications. Relying on advanced technology R & D capabilities and a strict quality management system, 666 Company has become one of the leading brands in the smart wearable industry. In the future, we will continue to deepen artificial intelligence and Internet of Things technologies, create smarter and more human-centered products, and promote the development of the global smart wearable ecosystem.
+                </p>
+            </section>
+
+            <!-- Personnel Introduction Section -->
+            <section class="personnel-section">
+                <h2>Our Team</h2>
+                <div class="personnel-grid">
+                    <!-- Team Member Cards -->
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Su Yongcheng</h3>
+                            <p class="role">Founder and CEO of 666 Company</p>
+                            <p class="description">Responsible for the overall strategic planning and operation management of the company.</p>
+                        </div>
+                    </div>
+
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25H8.25A2.25 2.25 0 006 8.25v10.5A2.25 2.25 0 008.25 19.5z" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Li Sihan</h3>
+                            <p class="role">Supervisor of the After-sales service Department</p>
+                            <p class="description">Coordinate after-sales affairs, ensure service quality and enhance customer satisfaction.</p>
+                        </div>
+                    </div>
+
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.354a12.06 12.06 0 01-4.5 0m4.5 2.354a12.06 12.06 0 01-4.5 0M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Mo Zuchao</h3>
+                            <p class="role"> Director of the Software Development Department</p>
+                            <p class="description">Be responsible for the research and development of the SW11 software system.</p>
+                        </div>
+                    </div>
+
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Fan Lihong</h3>
+                            <p class="role">Manager of the After-sales Management Department.</p>
+                            <p class="description">Plan the after-sales system and optimize the processes and service standards.</p>
+                        </div>
+                    </div>
+
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Xu Haijian</h3>
+                            <p class="role">Director of the Optoelectronic R&D Department</p>
+                            <p class="description">Be responsible for the research and development of photoelectric equipment.</p>
+                        </div>
+                    </div>
+
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Zhu Haomin</h3>
+                            <p class="role">Technical Director</p>
+                            <p class="description">Control the technological direction and promote technological innovation.</p>
+                        </div>
+                    </div>
+
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Liang Jialin</h3>
+                            <p class="role">Product Design Manager</p>
+                            <p class="description">Understand user needs, lead product design, and control delivery quality.</p>
+                        </div>
+                    </div>
+
+                    <div class="personnel-card">
+                        <svg class="card-border" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" rx="10" ry="10" />
+                        </svg>
+                        <div class="icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="personnel-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                            </svg>
+                        </div>
+                        <div class="text-content">
+                            <h3>Li Wanyang</h3>
+                            <p class="role">Hardware Engineer</p>
+                            <p class="description">Leads the design and testing of hardware modules such as sensors and chips.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Register ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animation A: Company Profile section
+            gsap.from(".profile-section h2", {
+                scrollTrigger: ".profile-section",
+                duration: 0.8,
+                y: 50,
+                opacity: 0,
+                ease: "power3.out",
+            });
+            gsap.from(".profile-section p", {
+                scrollTrigger: ".profile-section",
+                duration: 1.2,
+                y: 50,
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0.2,
+            });
+
+            // Animation B: Team section title
+            gsap.from(".personnel-section h2", {
+                scrollTrigger: ".personnel-section",
+                duration: 0.8,
+                y: 50,
+                opacity: 0,
+                ease: "power3.out",
+            });
+
+            // Animation C: Team member cards
+            gsap.from(".personnel-card", {
+                scrollTrigger: {
+                    trigger: ".personnel-grid",
+                    start: "top 85%",
+                },
+                duration: 0.6,
+                y: 40,
+                opacity: 0,
+                ease: "power3.out",
+                stagger: 0.1,
+                onComplete: initCardHoverAnimations,
+            });
+            
+            function initCardHoverAnimations() {
+                const cards = document.querySelectorAll('.personnel-card');
+
+                cards.forEach(card => {
+                    const rect = card.querySelector('.card-border rect');
+                    const iconContainer = card.querySelector('.icon-container');
+
+                    // Calculate perimeter for the border animation
+                    const perimeter = (card.offsetWidth + card.offsetHeight) * 2;
+                    
+                    // Set initial SVG stroke state
+                    gsap.set(rect, {
+                        strokeDasharray: perimeter,
+                        strokeDashoffset: perimeter,
+                    });
+
+                    // Create timeline for hover animations
+                    const tl = gsap.timeline({ paused: true, defaults: { duration: 0.4, ease: 'power2.out' } });
+
+                    // Define animation sequence
+                    tl.to(card, { scale: 1.05, boxShadow: '0 15px 40px rgba(0, 0, 0, 0.4)' })
+                        .to(iconContainer, { scale: 1.1, y: -5 }, '<')
+                        .to(rect, { strokeDashoffset: 0 }, '<');
+
+                    // Bind mouse events
+                    card.addEventListener('mouseenter', () => tl.play());
+                    card.addEventListener('mouseleave', () => tl.reverse());
+                });
+            }
+        });
+    </script>
+</body>
+</html>
